@@ -11,23 +11,23 @@ services:
       - "3000:3000"
     networks:
       - app-network
-  frontend:
-    build:
-      context: ../fronted_consultas_medicas
-      dockerfile: Dockerfile
-      target: frontend-prod
-    env_file:
-      - .env
-    restart: always
-    depends_on:
-      - backend
-    ports:
-      - "5179:5179"
-    volumes:
-      - ../Fronted_La_Carreta:/app
-      - /app/node_modules
-    networks:
-      - app-network
+  # frontend:
+  #   build:
+  #     context: ../fronted_consultas_medicas
+  #     dockerfile: Dockerfile
+  #     target: frontend-prod
+  #   env_file:
+  #     - .env
+  #   restart: always
+  #   depends_on:
+  #     - backend
+  #   ports:
+  #     - "5179:5179"
+  #   volumes:
+  #     - ../Fronted_La_Carreta:/app
+  #     - /app/node_modules
+  #   networks:
+  #     - app-network
   postgres:
     image: postgres:13
     environment:
@@ -36,12 +36,13 @@ services:
       POSTGRES_DB: consultasDB
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
     networks:
       - app-network
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "superAdmin"]
+      test: ["CMD", "pg_isready", "-U", "AdminDB"]
       interval: 10s
       timeout: 5s
       retries: 5
