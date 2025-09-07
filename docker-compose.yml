@@ -1,0 +1,54 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend-prod
+    env_file:
+      - .env
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+  frontend:
+    build:
+      context: ../fronted_consultas_medicas
+      dockerfile: Dockerfile
+      target: frontend-prod
+    env_file:
+      - .env
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "5179:5179"
+    volumes:
+      - ../Fronted_La_Carreta:/app
+      - /app/node_modules
+    networks:
+      - app-network
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: superAdmin # Usuario superAdmin
+      POSTGRES_PASSWORD: mySecurePassword # Contraseña del superAdmin
+      POSTGRES_DB: consultas_db # Nombre de la base de datos
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persistencia de la base de datos
+    ports:
+      - "5432:5432" # Puerto para la base de datos
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "superAdmin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge

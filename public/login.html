@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Redirect</title>
+</head>
+<body>
+    <script>
+        async function handleAuthCode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            if (code) {
+                try {
+                    // Suponiendo que tienes una función `acquireToken` definida en otro archivo JS
+                    const accessToken = await acquireToken(code);
+                    console.log("Token de acceso:", accessToken);
+                    // Redirigir al usuario o mostrar contenido protegido
+                } catch (error) {
+                    console.error("Error al adquirir el token de acceso:", error);
+                }
+            }
+        }
+
+        handleAuthCode();
+    </script>
+</body>
+</html>

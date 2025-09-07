@@ -1,0 +1,50 @@
+{
+  "compilerOptions": {
+    /* Lenguaje y entorno */
+    "target": "ES2021",                                  /* Versión de JavaScript que se generará */
+    "module": "CommonJS",                                /* Usamos CommonJS para el backend */
+    "moduleResolution": "node",                          /* Resolución de módulos estilo Node.js */
+    "esModuleInterop": true,                             /* Facilita la interoperabilidad entre módulos ES y CommonJS */
+    "forceConsistentCasingInFileNames": true,            /* Asegura consistencia en el caso de los nombres de archivo */
+
+    /* Directorios */
+    "rootDir": "src",                                    /* Carpeta de código fuente */
+    "outDir": "dist",                                    /* Carpeta para los archivos compilados */
+    "baseUrl": ".",                                      /* Raíz de las importaciones de módulos */
+    "types": ["node"],                                   /* Tipos de Node.js */
+    "skipLibCheck": true,                                /* Omite la comprobación de bibliotecas de tipos (mejora el rendimiento) */
+
+    /* Generación */
+    "declaration": true,                                 /* Genera archivos .d.ts */
+    "declarationMap": true,                              /* Genera mapas de declaraciones */
+    "sourceMap": true,                                   /* Genera mapas de origen para depuración */
+    "removeComments": true,                              /* Elimina comentarios en los archivos generados */
+
+    /* Verificación estricta */
+    "strict": true,                                      /* Habilita todas las comprobaciones estrictas */
+    "noImplicitAny": true,                               /* Desactiva cualquier tipo implícito 'any' */
+    "strictNullChecks": true,                            /* Considera 'null' y 'undefined' como tipos distintos */
+    "strictFunctionTypes": true,                         /* Garantiza compatibilidad entre tipos de funciones */
+    "noUnusedLocals": true,                              /* Errores por variables locales no usadas */
+    "noUnusedParameters": true,                          /* Errores por parámetros no utilizados */
+    "noImplicitReturns": true,                           /* Errores cuando las funciones no tienen un 'return' explícito */
+    "noFallthroughCasesInSwitch": true,                  /* Errores en casos de 'switch' que no terminan con 'break' */
+    
+    /* Otros */
+    "resolveJsonModule": true,                           /* Permite importar archivos JSON */
+    "allowSyntheticDefaultImports": true,                /* Permite importar módulos sin exportación por defecto */
+    "isolatedModules": true,                             /* Garantiza que los módulos puedan ser compilados de forma aislada */
+    "incremental": true,                                 /* Habilita compilación incremental */
+    "skipDefaultLibCheck": true                          /* Omite la comprobación de las bibliotecas por defecto */
+  },
+  "include": [
+    "src",                /* Archivos de la app (frontend y backend) */
+    "prisma/seed.ts",     /* Archivo de seed para Prisma */
+    "prisma/seeders/**/*" /* Seeders adicionales */
+  ],
+  "exclude": [
+    "node_modules",       /* Excluye 'node_modules' para no procesar dependencias */
+    "dist",               /* Excluye la carpeta 'dist' generada */
+    "prisma"              /* Excluye la carpeta de Prisma de la compilación */
+  ]
+}

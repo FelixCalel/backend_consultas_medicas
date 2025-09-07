@@ -1,0 +1,49 @@
+{
+  "name": "backend_consultas_medicas",
+  "version": "1.0.0",
+  "description": "Acá será alojado toda la lógica y conexión de la aplicación",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "npx prisma generate && npx prisma db push && ts-node --project tsconfig.seed.json --transpile-only prisma/seed.ts",
+    "dev": "ts-node-dev --respawn --clear --poll src/app.ts",
+    "build": "npm run clean && tsc",
+    "clean": "rimraf dist",
+    "start": "node dist/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FelixCalel/backend_consultas_medicas.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FelixCalel/backend_consultas_medicas/issues"
+  },
+  "homepage": "https://github.com/FelixCalel/backend_consultas_medicas#readme",
+  "dependencies": {
+    "@prisma/client": "^6.15.0",
+    "axios": "^1.11.0",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "date-fns": "^4.1.0",
+    "dotenv": "^17.2.2",
+    "env-var": "^7.5.0",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "winston": "^3.17.0",
+    "wss": "^3.3.4"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.3.1",
+    "prisma": "^6.15.0",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.2"
+  }
+}

@@ -1,0 +1,19 @@
+FROM node:20-bullseye-slim AS backend-build
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+
+COPY . .
+RUN npm run build
+
+FROM node:20-bullseye-slim AS backend-prod
+WORKDIR /app
+COPY --from=backend-build /app/dist ./dist
+COPY --from=backend-build /app/package*.json ./
+
+RUN npm install --production
+
+EXPOSE 3000
+
+CMD ["node", "dist/server.js"]  # Ajusta el archivo de entrada si es necesario
