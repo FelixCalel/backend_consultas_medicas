@@ -31,13 +31,13 @@ services:
   postgres:
     image: postgres:13
     environment:
-      POSTGRES_USER: superAdmin # Usuario superAdmin
-      POSTGRES_PASSWORD: mySecurePassword # Contraseña del superAdmin
-      POSTGRES_DB: consultas_db # Nombre de la base de datos
+      POSTGRES_USER: AdminDB
+      POSTGRES_PASSWORD: fasdf15876asf54d
+      POSTGRES_DB: consultasDB
     volumes:
-      - postgres_data:/var/lib/postgresql/data # Persistencia de la base de datos
+      - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432" # Puerto para la base de datos
+      - "5432:5432"
     networks:
       - app-network
     healthcheck:

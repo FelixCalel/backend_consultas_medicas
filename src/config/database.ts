@@ -1,5 +1,5 @@
 import { logger } from './logger';
-import { PrismaClient } from '../generated/prisma';
+import { PrismaClient } from '../../prisma/generated/prisma';
 
 export const prisma = new PrismaClient();
 
@@ -8,7 +8,7 @@ export async function initDB(): Promise<void> {
         await prisma.$connect();
         logger.info('Base de datos conectada 🟢');
     } catch (err) {
-                logger.error('No se pudo conectar a la base de datos 🔴', { err });
+        logger.error('No se pudo conectar a la base de datos 🔴', { err });
     }
 
     const shutdown = async () => {
