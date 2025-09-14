@@ -1,0 +1,10 @@
+HOST=0.0.0.0
+PORT=3000
+PUBLIC_PATH=public
+NODE_ENV=development
+JWT_SECRET=your_jwt_secret
+DATABASE_URL="postgresql://adminDB:@2025DB.CONSULTAS@consultaspostgresql.postgres.database.azure.com:5432/consultasDB?sslmode=require"
+DATABASE_PASSWORD=@2025DB.CONSULTAS
+DATABASE_HOST=consultaspostgresql.postgres.database.azure.com
+DATABASE_NAME=postgres
+DATABASE_USER=adminDB
