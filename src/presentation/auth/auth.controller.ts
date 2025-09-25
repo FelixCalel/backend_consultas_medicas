@@ -1,16 +1,9 @@
-// src/presentation/auth/auth.controller.ts
-import { PrismaClient, Role } from "@prisma/client";
-import bcrypt from "bcryptjs";
-import jwt, { type Secret, type SignOptions } from "jsonwebtoken";
-import { type Request, type Response } from "express";
-
-const prisma = new PrismaClient();
-
-// Aseguramos tipos compatibles con jsonwebtoken@9
-const JWT_SECRET: Secret = (process.env.JWT_SECRET ?? "dev") as Secret;
-// SignOptions["expiresIn"] acepta number | StringValue ("1d", "2h", etc.)
-const JWT_EXPIRES_IN: SignOptions["expiresIn"] =
-  ((process.env.JWT_EXPIRES_IN as unknown) as SignOptions["expiresIn"]) ?? "1d";
+import { Request, Response } from "express";
+import { AuthRepository } from "../../domain/repositories/auth.repository";
+import { RegisterUserDto } from "../../domain/dtos/auth/register-user.dto";
+import { LoginUserDto } from "../../domain/dtos/auth/login-user.dto";
+import jwt from "jsonwebtoken";
+import { Role } from "@prisma/client";
 
 type JwtPayload = {
   sub: number;
@@ -18,73 +11,46 @@ type JwtPayload = {
   role: Role;
 };
 
-function signToken(payload: JwtPayload): string {
-  const options: SignOptions = { expiresIn: JWT_EXPIRES_IN };
-  // Forzamos la sobrecarga correcta: (payload, secret: Secret, options?: SignOptions)
-  return jwt.sign(payload, JWT_SECRET, options);
-}
+export class AuthController {
+  constructor(private readonly authRepository: AuthRepository) {}
 
-export async function register(req: Request, res: Response) {
-  try {
-    const { email, password, role } = req.body as {
-      email?: string;
-      password?: string;
-      role?: Role | string;
-    };
-
-    if (!email || !password) {
-      return res.status(400).json({ message: "email and password are required" });
-    }
-
-    const exists = await prisma.user.findUnique({ where: { email } });
-    if (exists) {
-      return res.status(409).json({ message: "email already registered" });
-    }
-
-    const hash = await bcrypt.hash(password, 10);
-
-    // Normalizamos/validamos el rol contra el enum de Prisma
-    const roleNorm = (role ?? "USER") as Role;
-    if (!Object.values(Role).includes(roleNorm)) {
-      return res
-        .status(400)
-        .json({ message: `invalid role. Allowed: ${Object.values(Role).join(", ")}` });
-    }
-
-    // En tu esquema el campo es "password"
-    const user = await prisma.user.create({
-      data: { email, password: hash, role: roleNorm },
+  private signToken(payload: JwtPayload): string {
+    return jwt.sign(payload, process.env.JWT_SECRET || "dev", {
+      expiresIn: "1d",
     });
-
-    return res.status(201).json({ id: user.id, email: user.email, role: user.role });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: "register failed" });
   }
-}
 
-export async function login(req: Request, res: Response) {
-  try {
-    const { email, password } = req.body as { email?: string; password?: string };
+  register = (req: Request, res: Response) => {
+    const [error, registerUserDto] = RegisterUserDto.create(req.body);
+    if (error) return res.status(400).json({ message: error });
 
-    if (!email || !password) {
-      return res.status(400).json({ message: "email and password are required" });
-    }
+    this.authRepository
+      .register(registerUserDto!)
+      .then((user) => {
+        const token = this.signToken({
+          sub: user.id,
+          email: user.email,
+          role: user.role,
+        });
+        res.json({ user, token });
+      })
+      .catch((error) => res.status(400).json({ message: error.message }));
+  };
 
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) return res.status(401).json({ message: "Invalid credentials" });
+  login = (req: Request, res: Response) => {
+    const [error, loginUserDto] = LoginUserDto.create(req.body);
+    if (error) return res.status(400).json({ message: error });
 
-    const ok = await bcrypt.compare(password, user.password);
-    if (!ok) return res.status(401).json({ message: "Invalid credentials" });
-
-    const token = signToken({ sub: user.id, email: user.email, role: user.role });
-
-    return res.json({
-      token,
-      user: { id: user.id, email: user.email, role: user.role },
-    });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: "login failed" });
-  }
+    this.authRepository
+      .login(loginUserDto!)
+      .then((user) => {
+        const token = this.signToken({
+          sub: user.id,
+          email: user.email,
+          role: user.role,
+        });
+        res.json({ user, token });
+      })
+      .catch((error) => res.status(400).json({ message: error.message }));
+  };
 }
