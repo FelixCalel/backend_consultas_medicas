@@ -5,9 +5,9 @@ export class UserEntity {
   constructor(
     public id: number,
     public email: string,
-    public password,
+    public password: string,
     public role: Role,
     public createdAt: Date,
     public updatedAt: Date,
-  ) {}
+  ) { }
 }

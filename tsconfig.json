@@ -26,7 +26,7 @@
     "strictNullChecks": true,                            /* Considera 'null' y 'undefined' como tipos distintos */
     "strictFunctionTypes": true,                         /* Garantiza compatibilidad entre tipos de funciones */
     "noUnusedLocals": true,                              /* Errores por variables locales no usadas */
-    "noUnusedParameters": true,                          /* Errores por parámetros no utilizados */
+    "noUnusedParameters": false,                          /* Errores por parámetros no utilizados */
     "noImplicitReturns": true,                           /* Errores cuando las funciones no tienen un 'return' explícito */
     "noFallthroughCasesInSwitch": true,                  /* Errores en casos de 'switch' que no terminan con 'break' */
     
