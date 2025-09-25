@@ -16,7 +16,7 @@ async function main() {
         port: envs.PORT,
         host: envs.HOST,
         public_path: envs.PUBLIC_PATH,
-        routes: AppRoutes.routers,
+        routes: AppRoutes.routes,
     });
 
     try {
