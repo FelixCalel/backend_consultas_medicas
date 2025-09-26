@@ -20,7 +20,15 @@ export class AuthDatasourceImpl implements AuthDatasource {
     const isMatch = await bcrypt.compare(loginUserDto.password, user.password);
     if (!isMatch) throw new Error("Invalid credentials");
 
-    return user;
+    return new UserEntity(
+      user.id,
+      user.name!,
+      user.email,
+      user.password,
+      user.role,
+      user.createdAt,
+      user.updatedAt
+    );
   }
 
   async register(registerUserDto: RegisterUserDto): Promise<UserEntity> {
@@ -36,12 +44,21 @@ export class AuthDatasourceImpl implements AuthDatasource {
 
     const user = await prisma.user.create({
       data: {
+        name: registerUserDto.name,
         email: registerUserDto.email,
         password: hashedPassword,
         role: registerUserDto.role,
       },
     });
 
-    return user;
+    return new UserEntity(
+      user.id,
+      user.name!,
+      user.email,
+      user.password,
+      user.role,
+      user.createdAt,
+      user.updatedAt
+    );
   }
 }

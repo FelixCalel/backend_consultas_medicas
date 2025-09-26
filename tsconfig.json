@@ -12,6 +12,7 @@
     "outDir": "dist",                                    /* Carpeta para los archivos compilados */
     "baseUrl": ".",                                      /* Raíz de las importaciones de módulos */
     "types": ["node"],                                   /* Tipos de Node.js */
+    "typeRoots": ["./node_modules/@types", "./src/types"], /* Directorios para buscar tipos */
     "skipLibCheck": true,                                /* Omite la comprobación de bibliotecas de tipos (mejora el rendimiento) */
 
     /* Generación */
