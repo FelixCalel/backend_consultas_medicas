@@ -37,7 +37,7 @@ export class AppointmentController {
                 // No fallar la creación de la cita si falla el email
             }
 
-            res.status(201).json({
+            return res.status(201).json({
                 ok: true,
                 message: "Cita médica creada exitosamente",
                 data: appointment,
@@ -45,7 +45,7 @@ export class AppointmentController {
         } catch (error: any) {
             const statusCode = error.message.includes("not found") ? 404 :
                 error.message.includes("not available") ? 409 : 500;
-            res.status(statusCode).json({
+            return res.status(statusCode).json({
                 ok: false,
                 message: error.message,
             });
@@ -56,12 +56,12 @@ export class AppointmentController {
         try {
             const appointments = await this.appointmentRepository.getAll();
 
-            res.status(200).json({
+            return res.status(200).json({
                 ok: true,
                 data: appointments,
             });
         } catch (error: any) {
-            res.status(500).json({
+            return res.status(500).json({
                 ok: false,
                 message: error.message,
             });
@@ -81,12 +81,12 @@ export class AppointmentController {
 
             const appointment = await this.appointmentRepository.findById(Number(id));
 
-            res.status(200).json({
+            return res.status(200).json({
                 ok: true,
                 data: appointment,
             });
         } catch (error: any) {
-            res.status(404).json({
+            return res.status(404).json({
                 ok: false,
                 message: error.message,
             });
@@ -106,12 +106,12 @@ export class AppointmentController {
 
             const appointments = await this.appointmentRepository.findByPatientId(Number(patientId));
 
-            res.status(200).json({
+            return res.status(200).json({
                 ok: true,
                 data: appointments,
             });
         } catch (error: any) {
-            res.status(500).json({
+            return res.status(500).json({
                 ok: false,
                 message: error.message,
             });
@@ -131,12 +131,12 @@ export class AppointmentController {
 
             const appointments = await this.appointmentRepository.findByDoctorId(Number(doctorId));
 
-            res.status(200).json({
+            return res.status(200).json({
                 ok: true,
                 data: appointments,
             });
         } catch (error: any) {
-            res.status(500).json({
+            return res.status(500).json({
                 ok: false,
                 message: error.message,
             });
@@ -173,12 +173,12 @@ export class AppointmentController {
 
             const appointments = await this.appointmentRepository.findByDateRange(start, end);
 
-            res.status(200).json({
+            return res.status(200).json({
                 ok: true,
                 data: appointments,
             });
         } catch (error: any) {
-            res.status(500).json({
+            return res.status(500).json({
                 ok: false,
                 message: error.message,
             });
@@ -198,12 +198,12 @@ export class AppointmentController {
 
             const appointments = await this.appointmentRepository.findByStatus(status as Status);
 
-            res.status(200).json({
+            return res.status(200).json({
                 ok: true,
                 data: appointments,
             });
         } catch (error: any) {
-            res.status(500).json({
+            return res.status(500).json({
                 ok: false,
                 message: error.message,
             });
@@ -242,12 +242,12 @@ export class AppointmentController {
                 appointmentDate
             );
 
-            res.status(200).json({
+            return res.status(200).json({
                 ok: true,
                 data: availableSlots,
             });
         } catch (error: any) {
-            res.status(500).json({
+            return res.status(500).json({
                 ok: false,
                 message: error.message,
             });
@@ -317,7 +317,7 @@ export class AppointmentController {
                 // No fallar la actualización si falla el email
             }
 
-            res.status(200).json({
+            return res.status(200).json({
                 ok: true,
                 message: "Cita médica actualizada exitosamente",
                 data: appointment,
@@ -325,7 +325,7 @@ export class AppointmentController {
         } catch (error: any) {
             const statusCode = error.message.includes("not found") ? 404 :
                 error.message.includes("not available") ? 409 : 500;
-            res.status(statusCode).json({
+            return res.status(statusCode).json({
                 ok: false,
                 message: error.message,
             });
@@ -374,14 +374,14 @@ export class AppointmentController {
                 // No fallar la eliminación si falla el email
             }
 
-            res.status(200).json({
+            return res.status(200).json({
                 ok: true,
                 message: "Cita médica eliminada exitosamente",
                 data: appointment,
             });
         } catch (error: any) {
             const statusCode = error.message.includes("not found") ? 404 : 500;
-            res.status(statusCode).json({
+            return res.status(statusCode).json({
                 ok: false,
                 message: error.message,
             });
@@ -439,7 +439,7 @@ export class AppointmentController {
                 });
             }
 
-            res.status(200).json({
+            return res.status(200).json({
                 ok: true,
                 message: "Recordatorio enviado exitosamente",
                 data: {
@@ -450,7 +450,7 @@ export class AppointmentController {
             });
         } catch (error: any) {
             const statusCode = error.message.includes("not found") ? 404 : 500;
-            res.status(statusCode).json({
+            return res.status(statusCode).json({
                 ok: false,
                 message: error.message,
             });

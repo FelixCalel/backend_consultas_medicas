@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 import { PrismaClient, Role } from "@prisma/client";
 import { UpdateUserRoleDto } from "../../domain/dtos/admin/update-user-role.dto";
 import { UpdateUserDto } from "../../domain/dtos/admin/update-user.dto";
-import { UserEntity } from "../../domain/entities/user.entity";
 
 const prisma = new PrismaClient();
 
@@ -164,12 +163,12 @@ export class AdminController {
         patient: user.patient,
       };
 
-      res.status(200).json({
+      return res.status(200).json({
         ok: true,
         data: userEntity,
       });
     } catch (error: any) {
-      res.status(500).json({
+      return res.status(500).json({
         ok: false,
         message: error.message,
       });
@@ -245,13 +244,13 @@ export class AdminController {
         patient: updatedUser.patient,
       };
 
-      res.status(200).json({
+      return res.status(200).json({
         ok: true,
         message: "Usuario actualizado exitosamente",
         data: userEntity,
       });
     } catch (error: any) {
-      res.status(500).json({
+      return res.status(500).json({
         ok: false,
         message: error.message,
       });
@@ -351,13 +350,13 @@ export class AdminController {
         patient: updatedUser.patient,
       };
 
-      res.status(200).json({
+      return res.status(200).json({
         ok: true,
         message: "Rol del usuario actualizado exitosamente",
         data: userEntity,
       });
     } catch (error: any) {
-      res.status(500).json({
+      return res.status(500).json({
         ok: false,
         message: error.message,
       });
@@ -393,7 +392,7 @@ export class AdminController {
       }
 
       // Evitar que se elimine a si mismo
-      if (req.user && req.user.id === Number(id)) {
+      if (req.user && req.user.sub === Number(id)) {
         return res.status(409).json({
           ok: false,
           message: "No puedes eliminar tu propia cuenta",
@@ -456,7 +455,7 @@ export class AdminController {
         },
       });
 
-      res.status(200).json({
+      return res.status(200).json({
         ok: true,
         message: "Usuario eliminado exitosamente",
         data: {
@@ -467,7 +466,7 @@ export class AdminController {
         },
       });
     } catch (error: any) {
-      res.status(500).json({
+      return res.status(500).json({
         ok: false,
         message: error.message,
       });
@@ -510,12 +509,12 @@ export class AdminController {
         patient: user.patient,
       }));
 
-      res.status(200).json({
+      return res.status(200).json({
         ok: true,
         data: userEntities,
       });
     } catch (error: any) {
-      res.status(500).json({
+      return res.status(500).json({
         ok: false,
         message: error.message,
       });

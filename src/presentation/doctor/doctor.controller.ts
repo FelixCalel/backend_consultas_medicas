@@ -14,13 +14,13 @@ export class DoctorController {
 
             const doctor = await this.doctorRepository.create(createDoctorDto!);
 
-            res.status(201).json({
+            return res.status(201).json({
                 ok: true,
                 message: "Doctor creado exitosamente",
                 data: doctor,
             });
         } catch (error: any) {
-            res.status(500).json({
+            return res.status(500).json({
                 ok: false,
                 message: error.message,
             });
@@ -31,12 +31,12 @@ export class DoctorController {
         try {
             const doctors = await this.doctorRepository.getAll();
 
-            res.status(200).json({
+            return res.status(200).json({
                 ok: true,
                 data: doctors,
             });
         } catch (error: any) {
-            res.status(500).json({
+            return res.status(500).json({
                 ok: false,
                 message: error.message,
             });
@@ -56,12 +56,12 @@ export class DoctorController {
 
             const doctor = await this.doctorRepository.findById(Number(id));
 
-            res.status(200).json({
+            return res.status(200).json({
                 ok: true,
                 data: doctor,
             });
         } catch (error: any) {
-            res.status(404).json({
+            return res.status(404).json({
                 ok: false,
                 message: error.message,
             });
@@ -81,12 +81,12 @@ export class DoctorController {
 
             const doctor = await this.doctorRepository.findByUserId(Number(userId));
 
-            res.status(200).json({
+            return res.status(200).json({
                 ok: true,
                 data: doctor,
             });
         } catch (error: any) {
-            res.status(404).json({
+            return res.status(404).json({
                 ok: false,
                 message: error.message,
             });
@@ -106,12 +106,12 @@ export class DoctorController {
 
             const doctors = await this.doctorRepository.findBySpecialty(specialty);
 
-            res.status(200).json({
+            return res.status(200).json({
                 ok: true,
                 data: doctors,
             });
         } catch (error: any) {
-            res.status(500).json({
+            return res.status(500).json({
                 ok: false,
                 message: error.message,
             });
@@ -135,14 +135,14 @@ export class DoctorController {
 
             const doctor = await this.doctorRepository.update(Number(id), updateDoctorDto!);
 
-            res.status(200).json({
+            return res.status(200).json({
                 ok: true,
                 message: "Doctor actualizado exitosamente",
                 data: doctor,
             });
         } catch (error: any) {
             const statusCode = error.message.includes("not found") ? 404 : 500;
-            res.status(statusCode).json({
+            return res.status(statusCode).json({
                 ok: false,
                 message: error.message,
             });
@@ -162,7 +162,7 @@ export class DoctorController {
 
             const doctor = await this.doctorRepository.delete(Number(id));
 
-            res.status(200).json({
+            return res.status(200).json({
                 ok: true,
                 message: "Doctor eliminado exitosamente",
                 data: doctor,
@@ -170,7 +170,7 @@ export class DoctorController {
         } catch (error: any) {
             const statusCode = error.message.includes("not found") ? 404 :
                 error.message.includes("active appointments") ? 409 : 500;
-            res.status(statusCode).json({
+            return res.status(statusCode).json({
                 ok: false,
                 message: error.message,
             });

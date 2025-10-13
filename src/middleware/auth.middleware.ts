@@ -1,18 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { Role } from "@prisma/client";
-
-// ---- Types ----
-type AuthUser = { sub: number; email: string; role: Role };
-
-// Extiende el tipo de Request para poder hacer req.user
-declare global {
-  namespace Express {
-    interface Request {
-      user?: AuthUser;
-    }
-  }
-}
+import { AuthUser } from "../types/express";
 
 const JWT_SECRET = process.env.JWT_SECRET || "dev";
 

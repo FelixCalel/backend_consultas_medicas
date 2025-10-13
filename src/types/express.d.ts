@@ -1,8 +1,13 @@
 
 // src/types/express.d.ts
+import { Role } from "@prisma/client";
 
-declare namespace Express {
-  export interface Request {
-    user?: any; // O un tipo más específico si lo tienes, ej: UserEntity
+export type AuthUser = { sub: number; email: string; role: Role };
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: AuthUser;
+    }
   }
 }
