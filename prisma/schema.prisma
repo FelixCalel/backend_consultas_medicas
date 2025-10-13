@@ -22,25 +22,39 @@ model User {
 }
 
 model Patient {
-  id        Int      @id @default(autoincrement())
-  name      String
-  birthDate DateTime
-  phone     String
-  address   String
-  userId    Int      @unique
-  user      User     @relation(fields: [userId], references: [id])
+  id               Int       @id @default(autoincrement())
+  name             String
+  birthDate        DateTime
+  phone            String
+  address          String
+  gender           String?
+  bloodType        String?
+  emergencyContact String?
+  medicalHistory   String?
+  userId           Int       @unique
+  user             User      @relation(fields: [userId], references: [id])
+  createdAt        DateTime? @default(now())
+  updatedAt        DateTime? @updatedAt
 
   appointments Appointment[]
 }
 
 model Doctor {
-  id        Int    @id @default(autoincrement())
-  name      String
-  specialty String
-  phone     String
-  email     String @unique
-  userId    Int    @unique
-  user      User   @relation(fields: [userId], references: [id])
+  id              Int      @id @default(autoincrement())
+  name            String
+  specialty       String
+  phone           String
+  email           String   @unique
+  licenseNumber   String   @unique
+  experience      Int?
+  education       String?
+  bio             String?
+  consultationFee Float?
+  availableHours  String?
+  userId          Int      @unique
+  user            User     @relation(fields: [userId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   appointments Appointment[]
 }
@@ -48,11 +62,16 @@ model Doctor {
 model Appointment {
   id        Int      @id @default(autoincrement())
   date      DateTime
+  time      String
+  reason    String?
+  notes     String?
   status    Status   @default(PENDING)
   patientId Int
   doctorId  Int
   patient   Patient  @relation(fields: [patientId], references: [id])
   doctor    Doctor   @relation(fields: [doctorId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum Role {
