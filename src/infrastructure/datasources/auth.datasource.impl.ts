@@ -61,4 +61,24 @@ export class AuthDatasourceImpl implements AuthDatasource {
       user.updatedAt
     );
   }
+
+  async getUserByEmail(email: string): Promise<UserEntity | null> {
+    const user = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    if (!user) return null;
+
+    return new UserEntity(
+      user.id,
+      user.name!,
+      user.email,
+      user.password,
+      user.role,
+      user.createdAt,
+      user.updatedAt
+    );
+  }
 }

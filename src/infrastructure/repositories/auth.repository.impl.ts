@@ -6,7 +6,7 @@ import { UserEntity } from "../../domain/entities/user.entity";
 import { LoginUserDto } from "../../domain/dtos/auth/login-user.dto";
 
 export class AuthRepositoryImpl implements AuthRepository {
-  constructor(private readonly authDatasource: AuthDatasource) {}
+  constructor(private readonly authDatasource: AuthDatasource) { }
 
   login(loginUserDto: LoginUserDto): Promise<UserEntity> {
     return this.authDatasource.login(loginUserDto);
@@ -14,5 +14,9 @@ export class AuthRepositoryImpl implements AuthRepository {
 
   register(registerUserDto: RegisterUserDto): Promise<UserEntity> {
     return this.authDatasource.register(registerUserDto);
+  }
+
+  getUserByEmail(email: string): Promise<UserEntity | null> {
+    return this.authDatasource.getUserByEmail(email);
   }
 }

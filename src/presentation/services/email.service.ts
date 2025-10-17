@@ -39,6 +39,7 @@ export class EmailService {
 
     try {
       const sentInformation = await this.transporter.sendMail({
+        from: `"SaludAgenda - Consultoría Médica" <${envs.MAILER_EMAIL}>`,
         to: to,
         subject: subject,
         html: htmlBody,
