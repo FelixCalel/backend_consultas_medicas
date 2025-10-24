@@ -20,25 +20,23 @@ export class Server {
   private readonly routes: Router;
 
   constructor(options: Options) {
-    const { port, host, routes, public_path = "public" } = options;
+    const { port, host, routes } = options;
     this.port = port;
     this.host = host;
-    this.publicPath = public_path;
+    // Usar ruta absoluta para la carpeta public
+    this.publicPath = path.join(__dirname, '../../public');
     this.routes = routes;
   }
 
   async start() {
     await initDB();
 
-    // Middlewares
+
     this.app.use(cors({ origin: "*" }));
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
 
-    // Static public folder
-    this.app.use(express.static(this.publicPath));
-
-    // Endpoint para probar conexión DB
+    // 1. Endpoints de API y health primero
     this.app.get("/health", async (_req, res) => {
       try {
         await prisma.$queryRaw`SELECT 1`;
@@ -49,16 +47,17 @@ export class Server {
       }
     });
 
-    // Rutas principales
-    this.app.use("/", this.routes);
+    this.app.use("/api", this.routes);
 
-    // SPA fallback
-    this.app.get("/", (_req, res) => {
-      const indexPath = path.join(__dirname, "../../../", this.publicPath, "index.html");
+    // 2. Archivos estáticos
+    this.app.use(express.static(this.publicPath));
+
+    // 3. Handler para SPA (frontend) en rutas no-API (catch-all seguro)
+    this.app.use((_req, res) => {
+      const indexPath = path.join(this.publicPath, 'index.html');
       res.sendFile(indexPath);
     });
 
-    // Arrancar servidor
     const server = createServer(this.app);
     server.listen(this.port, this.host, () => {
       logger.info(`✅ Servidor corriendo en http://${this.host}:${this.port}`);

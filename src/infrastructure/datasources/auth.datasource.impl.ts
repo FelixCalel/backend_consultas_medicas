@@ -42,6 +42,7 @@ export class AuthDatasourceImpl implements AuthDatasource {
 
     const hashedPassword = await bcrypt.hash(registerUserDto.password, 10);
 
+    // Crear usuario
     const user = await prisma.user.create({
       data: {
         name: registerUserDto.name,
@@ -50,6 +51,20 @@ export class AuthDatasourceImpl implements AuthDatasource {
         role: registerUserDto.role,
       },
     });
+
+    // Si el usuario es paciente, crear registro de paciente automáticamente
+    if (user.role === "PATIENT") {
+      // Datos mínimos para paciente
+      await prisma.patient.create({
+        data: {
+          name: user.name || "Paciente",
+          birthDate: new Date(), // Se puede actualizar luego
+          phone: "",
+          address: "",
+          userId: user.id,
+        },
+      });
+    }
 
     return new UserEntity(
       user.id,

@@ -1,9 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Role } from "@prisma/client";
 
-/**
- * Middleware específico para verificar que el usuario sea ADMIN
- */
 export function requireAdmin(req: Request, res: Response, next: NextFunction): void {
     if (!req.user) {
         res.status(401).json({
@@ -25,9 +22,6 @@ export function requireAdmin(req: Request, res: Response, next: NextFunction): v
     return;
 }
 
-/**
- * Middleware para verificar que el usuario sea ADMIN o DOCTOR
- */
 export function requireAdminOrDoctor(req: Request, res: Response, next: NextFunction): void {
     if (!req.user) {
         res.status(401).json({
@@ -49,9 +43,6 @@ export function requireAdminOrDoctor(req: Request, res: Response, next: NextFunc
     return;
 }
 
-/**
- * Middleware para verificar que el usuario pueda acceder a sus propios datos o sea admin
- */
 export function requireOwnershipOrAdmin(req: Request, res: Response, next: NextFunction): void {
     if (!req.user) {
         res.status(401).json({

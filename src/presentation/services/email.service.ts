@@ -54,7 +54,6 @@ export class EmailService {
     }
   }
 
-  // Métodos específicos para notificaciones de citas médicas
 
   async sendAppointmentConfirmation(appointmentData: AppointmentEmailData): Promise<boolean> {
     const { patientName, patientEmail, doctorName, doctorSpecialty, appointmentDate, description, consultationFee, appointmentId } = appointmentData;
@@ -172,7 +171,6 @@ export class EmailService {
     });
   }
 
-  // Plantillas HTML privadas
 
   private getAppointmentConfirmationTemplate(data: {
     patientName: string;

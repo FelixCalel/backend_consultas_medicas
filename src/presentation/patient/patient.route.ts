@@ -13,12 +13,8 @@ export class PatientRoutes {
         const patientRepository = new PatientRepositoryImpl(patientDatasource);
         const patientController = new PatientController(patientRepository);
 
-        // Todas las rutas requieren autenticación
         router.use(requireAuth);
 
-        // CRUD básico de pacientes
-        router.post("/", patientController.createPatient); // Cualquier usuario autenticado puede crear su perfil de paciente
-        router.get("/", requireAdminOrDoctor, patientController.getAllPatients); // Solo admin o doctor pueden ver todos los pacientes
         router.get("/:id", requireAdminOrDoctor, patientController.getPatientById); // Solo admin o doctor pueden ver detalles de pacientes
         router.put("/:id", patientController.updatePatient); // Los pacientes pueden actualizar su propia información (se validará en el controlador)
         router.delete("/:id", requireAdmin, patientController.deletePatient); // Solo admin puede eliminar pacientes

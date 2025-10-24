@@ -13,19 +13,28 @@ export class DoctorRoutes {
         const doctorRepository = new DoctorRepositoryImpl(doctorDatasource);
         const doctorController = new DoctorController(doctorRepository);
 
-        // Todas las rutas requieren autenticación
         router.use(requireAuth);
 
-        // CRUD básico de doctores
-        router.post("/", requireAdmin, doctorController.createDoctor); // Solo admin puede crear doctores
-        router.get("/", doctorController.getAllDoctors); // Todos pueden ver la lista de doctores
-        router.get("/:id", doctorController.getDoctorById); // Todos pueden ver detalles de un doctor
-        router.put("/:id", requireAdminOrDoctor, doctorController.updateDoctor); // Admin o el propio doctor
-        router.delete("/:id", requireAdmin, doctorController.deleteDoctor); // Solo admin puede eliminar
+        // Crear doctor (solo admin)
+        router.post("/", requireAdmin, doctorController.createDoctor);
 
-        // Endpoints específicos
-        router.get("/user/:userId", doctorController.getDoctorByUserId); // Todos pueden buscar por usuario
-        router.get("/specialty/:specialty", doctorController.getDoctorsBySpecialty); // Todos pueden buscar por especialidad
+        // Listar todos los doctores (admin o doctor)
+        router.get("/", requireAdminOrDoctor, doctorController.getAllDoctors);
+
+        // Obtener doctor por ID (admin o doctor)
+        router.get("/:id", requireAdminOrDoctor, doctorController.getDoctorById);
+
+        // Obtener doctor por userId (admin o doctor)
+        router.get("/user/:userId", requireAdminOrDoctor, doctorController.getDoctorByUserId);
+
+        // Obtener doctores por especialidad (admin o doctor)
+        router.get("/specialty/:specialty", requireAdminOrDoctor, doctorController.getDoctorsBySpecialty);
+
+        // Actualizar doctor (solo admin)
+        router.put("/:id", requireAdmin, doctorController.updateDoctor);
+
+        // Eliminar doctor (solo admin)
+        router.delete("/:id", requireAdmin, doctorController.deleteDoctor);
 
         return router;
     }

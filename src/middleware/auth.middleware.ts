@@ -5,9 +5,6 @@ import { AuthUser } from "../types/express";
 
 const JWT_SECRET = process.env.JWT_SECRET || "dev";
 
-/**
- * Requiere un token válido y adjunta el usuario a req.user
- */
 export function requireAuth(req: Request, res: Response, next: NextFunction): void {
   const header = req.header("authorization");
 
@@ -40,9 +37,6 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
   }
 }
 
-/**
- * Verifica que el usuario autenticado tenga uno de los roles permitidos
- */
 export function authorize(...allowed: Role[]) {
   return (req: Request, res: Response, next: NextFunction): void => {
     if (!req.user) {
