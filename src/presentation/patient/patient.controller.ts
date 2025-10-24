@@ -6,6 +6,20 @@ import { PatientRepository } from "../../domain/repositories/patient.repository"
 export class PatientController {
     constructor(private readonly patientRepository: PatientRepository) { }
 
+    // Buscar pacientes por nombre, correo o teléfono (autocompletado)
+    public searchPatients = async (req: Request, res: Response) => {
+        try {
+            const { search } = req.query;
+            if (!search || typeof search !== "string" || search.trim().length < 2) {
+                return res.status(400).json({ ok: false, message: "El parámetro 'search' es requerido (mínimo 2 caracteres)" });
+            }
+            const patients = await this.patientRepository.search(search.trim());
+            return res.status(200).json({ ok: true, data: patients });
+        } catch (error: any) {
+            return res.status(500).json({ ok: false, message: error.message });
+        }
+    };
+
     public createPatient = async (req: Request, res: Response) => {
         try {
             const [error, createPatientDto] = CreatePatientDto.create(req.body);

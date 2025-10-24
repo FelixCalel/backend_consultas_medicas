@@ -30,4 +30,8 @@ export class PatientRepositoryImpl implements PatientRepository {
     delete(id: number): Promise<PatientEntity> {
         return this.patientDatasource.delete(id);
     }
+
+    search(query: string): Promise<PatientEntity[]> {
+        return this.patientDatasource.search(query);
+    }
 }

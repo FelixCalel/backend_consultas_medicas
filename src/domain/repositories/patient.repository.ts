@@ -9,4 +9,5 @@ export abstract class PatientRepository {
     abstract findByUserId(userId: number): Promise<PatientEntity>;
     abstract update(id: number, updatePatientDto: UpdatePatientDto): Promise<PatientEntity>;
     abstract delete(id: number): Promise<PatientEntity>;
+    abstract search(query: string): Promise<PatientEntity[]>;
 }

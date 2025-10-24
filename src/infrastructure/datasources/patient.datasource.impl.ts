@@ -1,3 +1,4 @@
+// ...eliminar bloque duplicado fuera de la clase...
 import { PrismaClient } from "@prisma/client";
 import { PatientDatasource } from "../../domain/datasources/patient.datasource";
 import { CreatePatientDto } from "../../domain/dtos/patient/create-patient.dto";
@@ -7,6 +8,23 @@ import { PatientEntity } from "../../domain/entities/patient.entity";
 const prisma = new PrismaClient();
 
 export class PatientDatasourceImpl implements PatientDatasource {
+    async search(query: string): Promise<PatientEntity[]> {
+        // Buscar por nombre, correo o teléfono (case-insensitive)
+        const patients = await prisma.patient.findMany({
+            where: {
+                OR: [
+                    { name: { contains: query, mode: 'insensitive' } },
+                    { phone: { contains: query, mode: 'insensitive' } },
+                    { user: { email: { contains: query, mode: 'insensitive' } } },
+                ],
+            },
+            include: {
+                user: true,
+            },
+            take: 10, // Limitar resultados para autocompletado
+        });
+        return patients.map((patient) => PatientEntity.fromObject(patient));
+    }
     async create(createPatientDto: CreatePatientDto): Promise<PatientEntity> {
         const userExists = await prisma.patient.findUnique({
             where: {

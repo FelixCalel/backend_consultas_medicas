@@ -15,12 +15,13 @@ export class PatientRoutes {
 
         router.use(requireAuth);
 
-        router.get("/:id", requireAdminOrDoctor, patientController.getPatientById); // Solo admin o doctor pueden ver detalles de pacientes
-        router.put("/:id", patientController.updatePatient); // Los pacientes pueden actualizar su propia información (se validará en el controlador)
-        router.delete("/:id", requireAdmin, patientController.deletePatient); // Solo admin puede eliminar pacientes
 
-        // Endpoints específicos
-        router.get("/user/:userId", patientController.getPatientByUserId); // Buscar paciente por usuario (se validará acceso en controlador)
+        router.get("/", requireAdminOrDoctor, patientController.searchPatients);
+
+        router.get("/:id", requireAdminOrDoctor, patientController.getPatientById);
+        router.put("/:id", patientController.updatePatient);
+        router.delete("/:id", requireAdmin, patientController.deletePatient);
+        router.get("/user/:userId", patientController.getPatientByUserId);
 
         return router;
     }
