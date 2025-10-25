@@ -319,7 +319,7 @@ Authorization: Bearer {token}
 ```json
 {
   "date": "2025-10-21T00:00:00.000Z",
-  "time": "11:00 AM",
+  "time": "11:00",
   "status": "CONFIRMED"
 }
 ```

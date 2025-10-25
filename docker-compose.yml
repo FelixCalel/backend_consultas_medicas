@@ -11,23 +11,17 @@ services:
       - "3000:3000"
     networks:
       - app-network
-  # frontend:
-  #   build:
-  #     context: ../fronted_consultas_medicas
-  #     dockerfile: Dockerfile
-  #     target: frontend-prod
-  #   env_file:
-  #     - .env
-  #   restart: always
-  #   depends_on:
-  #     - backend
-  #   ports:
-  #     - "5179:5179"
-  #   volumes:
-  #     - ../Fronted_La_Carreta:/app
-  #     - /app/node_modules
-  #   networks:
-  #     - app-network
+  frontend:
+    build:
+      context: ../frontend_consultas_medicas
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+    networks:
+      - app-network
   postgres:
     image: postgres:13
     environment:
